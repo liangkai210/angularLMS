@@ -1,0 +1,97 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="genreCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Genre Name"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchGenre()">
+            </div>
+            <div genre-count-directive></div>
+            <div style="float: right;">
+                <button class="btn btn-primary" type="button" ng-click="showEditGenreModal(0)">Add New Genre</button>
+            </div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Genre Name</th>
+                    <th>Books</th>
+                    <th>Edit Genre</th>
+                    <th>Delete Genre</th>
+                </tr>
+                <tr ng-repeat="g in genres | orderBy: 'genre_name' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{g.genre_name}}</td>
+                    <td>
+                <span ng-repeat="b in g.books">
+                    <span ng-if="!$last">
+                    {{b.title}},
+                    </span>
+                    <span ng-if="$last">
+                    {{b.title}}
+                    </span>
+                </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditGenreModal(g.genre_id)">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deletegenre(g.genre_id)">Delete</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editgenremodal"
+             id="editgenremodal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Genre Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Genre Name</h5>
+                            <input type="text" id="inputBook" ng-model="genre.genre_name" class="form-control"
+                                   value="{{genre.genre_name}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-info">
+                            Books<br><br>
+                            <select ng-model="genre.books" ng-options="b.title for b in allbooks track by b.bookId"
+                                    multiple>
+                            </select>
+                            <br>
+                        </div>
+
+                        <div class="panel panel-warning">
+                                <span ng-if="genre.genre_id > 0">
+                                <button type="button" class="btn btn-primary" ng-click=updategenre()
+                                        data-dismiss="modal">Update
+                            </button>
+                            </span>
+                            <span ng-if="genre.genre_id < 1">
+                                <button type="button" class="btn btn-success" ng-click=addnewgenre()
+                                        data-dismiss="modal">Add
+                            </button>
+                            </span>
+                            <button type="button" class="btn btn-danger" ng-click=closegenremodal()
+                                    data-dismiss="modal">Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

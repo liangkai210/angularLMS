@@ -1,0 +1,114 @@
+<div class="container" style="width: 90%;" ng-controller="loanController">
+    <div class="panel-heading">
+        <h3>Branches</h3>
+    </div>
+    <div class="panel-body">
+        <div class="dropdown">
+            <button id="branchButton" class="btn btn-primary dropdown-toggle" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width: 200px;">
+                Select Branch
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li ng-repeat="branch in branches" ng-click="selectBranch(branch)">
+                    {{branch.branchName}}
+                </li>
+            </ul>
+        </div>
+        <div style="float: right;">
+            <button class="btn btn-danger" type="button" ng-click="logOff()">Log Out</button>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <ul class="pagination">
+            <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+            <li ng-repeat="n in [] | range: pagination.numPages"
+                ng-class="{active: n == pagination.page}"><a href=""
+                                                             ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+            <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+        </ul>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Book Title"
+                   aria-describedby="basic-addon1" ng-model="searchString"
+                   id="searchString" ng-change="searchPossBook()">
+        </div>
+        <table class="table">
+            <h2>Check Out</h2>
+            <tr>
+                <th>#</th>
+                <th>Book Title</th>
+                <th>Authors</th>
+                <th>Genres</th>
+                <th>Publisher</th>
+                <th>Checkout</th>
+            </tr>
+            <tr ng-repeat="b in possBooks | orderBy: 'b.title' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                <td>{{$index+1}}</td>
+                <td>{{b.title}}</td>
+                <td>
+                <span ng-repeat="a in b.authors">
+                    <span ng-if="!$last">
+                    {{a.authorName}},
+                    </span>
+                    <span ng-if="$last">
+                    {{a.authorName}}
+                    </span>
+                </span>
+                </td>
+                <td>
+                <span ng-repeat="g in b.genres">
+                     <span ng-if="!$last">
+                    {{g.genre_name}},
+                    </span>
+                    <span ng-if="$last">
+                    {{g.genre_name}}
+                    </span>
+                </span>
+                </td>
+                <td>{{b.publisher.publisherName}}</td>
+                <td>
+                    <button class="btn btn-success" type="button" value="Edit"
+                            ng-click="checkOutBook(b.bookId)">Check Out
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+        <ul class="pagination">
+            <li><a href="" ng-click="loanPagination.prevPage()">&laquo;</a></li>
+            <li ng-repeat="n in [] | range: loanPagination.numPages"
+                ng-class="{active: n == loanPagination.page}"><a href=""
+                                                                 ng-click="loanPagination.toPageId(n)">{{n + 1}}</a>
+            </li>
+            <li><a href="" ng-click="loanPagination.nextPage()">&raquo;</a></li>
+        </ul>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Book Title"
+                   aria-describedby="basic-addon1" ng-model="searchString1"
+                   ng-change="searchLoanBook()">
+        </div>
+        <table class="table">
+            <h2>Return Book</h2>
+            <tr>
+                <th>#</th>
+                <th>Book Title</th>
+                <th>Date Out</th>
+                <th>Due Date</th>
+                <th>Return</th>
+            </tr>
+            <tr ng-repeat="l in loans | orderBy: 'b.title' | startFrom: loanPagination.page * loanPagination.perPage | limitTo: loanPagination.perPage">
+                <td>{{$index+1}}</td>
+                <td>{{l.book.title}}</td>
+                <td>{{l.dateOut}}</td>
+                <td>{{l.dueDate}}</td>
+                <td>
+                    <button class="btn btn-success" type="button" value="Edit"
+                            ng-click="returnBook(l)">Return
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

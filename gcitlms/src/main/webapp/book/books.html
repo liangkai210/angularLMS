@@ -1,0 +1,123 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="bookCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Book Title"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchBook()">
+            </div>
+            <div book-count-directive></div>
+            <div style="float: right;">
+                <button class="btn btn-primary" type="button" ng-click="showEditBookModal(0)">Add New Book</button>
+            </div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Book Title</th>
+                    <th>Authors</th>
+                    <th>Genres</th>
+                    <th>Publisher</th>
+                    <th>Edit Book</th>
+                    <th>Delete Book</th>
+                </tr>
+                <tr ng-repeat="b in books | orderBy: 'title' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{b.title}}</td>
+                    <td>
+                <span ng-repeat="a in b.authors">
+                    <span ng-if="!$last">
+                    {{a.authorName}},
+                    </span>
+                    <span ng-if="$last">
+                    {{a.authorName}}
+                    </span>
+                </span>
+                    </td>
+                    <td>
+                <span ng-repeat="g in b.genres">
+                     <span ng-if="!$last">
+                    {{g.genre_name}},
+                    </span>
+                    <span ng-if="$last">
+                    {{g.genre_name}}
+                    </span>
+                </span>
+                    </td>
+                    <td>{{b.publisher.publisherName}}</td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditBookModal(b.bookId)">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" value="Delete" ng-click="deleteBook(b.bookId)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editbookmodal"
+             id="editbookmodal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Book Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Title</h5>
+                            <input type="text" id="inputBook" ng-model="book.title" class="form-control"
+                                   value="{{book.title}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-primary">
+                            Publisher<br><br>
+                            <select ng-model="book.publisher"
+                                    ng-options="p.publisherName for p in allpublishers track by p.publisherId">
+                            </select>
+                        </div>
+                        <div class="panel panel-success">
+                            Authors<br><br>
+                            <select ng-model="book.authors"
+                                    ng-options="a.authorName for a in allauthors track by a.authorId" multiple>
+                            </select>
+                        </div>
+                        <div class="panel panel-info">
+                            Genres<br><br>
+                            <select ng-model="book.genres"
+                                    ng-options="g.genre_name for g in allgenres track by g.genre_id" multiple>
+                            </select>
+                            <br>
+                        </div>
+                        <div class="panel panel-warning">
+                            <span ng-if="book.bookId > 0">
+                                <button type="button" class="btn btn-primary" ng-click=updateBook()
+                                        data-dismiss="modal">Update
+                            </button>
+                            </span>
+                            <span ng-if="book.bookId < 1">
+                                <button type="button" class="btn btn-success" ng-click=addNewBook()
+                                        data-dismiss="modal">Add
+                            </button>
+                            </span>
+
+                            <button type="button" class="btn btn-danger" ng-click=closebookmodal()
+                                    data-dismiss="modal">Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

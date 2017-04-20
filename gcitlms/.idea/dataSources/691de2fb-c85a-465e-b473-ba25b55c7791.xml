@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="library@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.0">
+    <root id="1"/>
+    <schema id="2" parent="1" name="library">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="mysql"/>
+    <schema id="5" parent="1" name="performance_schema"/>
+    <schema id="6" parent="1" name="sys"/>
+    <table id="7" parent="2" name="tbl_author"/>
+    <table id="8" parent="2" name="tbl_book"/>
+    <table id="9" parent="2" name="tbl_book_authors"/>
+    <table id="10" parent="2" name="tbl_book_copies"/>
+    <table id="11" parent="2" name="tbl_book_genres"/>
+    <table id="12" parent="2" name="tbl_book_loans"/>
+    <table id="13" parent="2" name="tbl_borrower"/>
+    <table id="14" parent="2" name="tbl_genre"/>
+    <table id="15" parent="2" name="tbl_library_branch"/>
+    <table id="16" parent="2" name="tbl_publisher"/>
+    <column id="17" parent="7" name="authorId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="18" parent="7" name="authorName">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="19" parent="7" name="PRIMARY">
+      <ColNames>authorId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="20" parent="8" name="bookId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="21" parent="8" name="title">
+      <Position>2</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="22" parent="8" name="pubId">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="23" parent="8" name="fk_publisher">
+      <ColNames>pubId</ColNames>
+    </index>
+    <key id="24" parent="8" name="PRIMARY">
+      <ColNames>bookId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="25" parent="8" name="fk_publisher">
+      <ColNames>pubId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_publisher</RefTableName>
+      <RefColNames>publisherId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <column id="26" parent="9" name="bookId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="27" parent="9" name="authorId">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="28" parent="9" name="fk_tbl_book_authors_tbl_author1_idx">
+      <ColNames>authorId</ColNames>
+    </index>
+    <key id="29" parent="9" name="PRIMARY">
+      <ColNames>bookId
+authorId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="30" parent="9" name="fk_tbl_book_authors_tbl_book1">
+      <ColNames>bookId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_book</RefTableName>
+      <RefColNames>bookId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <foreign-key id="31" parent="9" name="fk_tbl_book_authors_tbl_author1">
+      <ColNames>authorId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_author</RefTableName>
+      <RefColNames>authorId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <column id="32" parent="10" name="bookId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="33" parent="10" name="branchId">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="34" parent="10" name="noOfCopies">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="35" parent="10" name="fk_bc_book">
+      <ColNames>bookId</ColNames>
+    </index>
+    <index id="36" parent="10" name="fk_bc_branch">
+      <ColNames>branchId</ColNames>
+    </index>
+    <key id="37" parent="10" name="PRIMARY">
+      <ColNames>bookId
+branchId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="38" parent="10" name="fk_bc_book">
+      <ColNames>bookId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_book</RefTableName>
+      <RefColNames>bookId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <foreign-key id="39" parent="10" name="fk_bc_branch">
+      <ColNames>branchId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_library_branch</RefTableName>
+      <RefColNames>branchId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <column id="40" parent="11" name="genre_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="41" parent="11" name="bookId">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="42" parent="11" name="fk_tbl_book_genres_tbl_book1_idx">
+      <ColNames>bookId</ColNames>
+    </index>
+    <key id="43" parent="11" name="PRIMARY">
+      <ColNames>genre_id
+bookId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="44" parent="11" name="fk_tbl_book_genres_tbl_genre1">
+      <ColNames>genre_id</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_genre</RefTableName>
+      <RefColNames>genre_id</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <foreign-key id="45" parent="11" name="fk_tbl_book_genres_tbl_book1">
+      <ColNames>bookId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_book</RefTableName>
+      <RefColNames>bookId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <column id="46" parent="12" name="bookId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="47" parent="12" name="branchId">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="48" parent="12" name="cardNo">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="49" parent="12" name="dateOut">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="50" parent="12" name="dueDate">
+      <Position>5</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="51" parent="12" name="dateIn">
+      <Position>6</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="52" parent="12" name="fk_bl_book">
+      <ColNames>bookId</ColNames>
+    </index>
+    <index id="53" parent="12" name="fk_bl_borrower">
+      <ColNames>cardNo</ColNames>
+    </index>
+    <index id="54" parent="12" name="fk_bl_branch">
+      <ColNames>branchId</ColNames>
+    </index>
+    <key id="55" parent="12" name="PRIMARY">
+      <ColNames>bookId
+branchId
+cardNo</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="56" parent="12" name="fk_bl_book">
+      <ColNames>bookId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_book</RefTableName>
+      <RefColNames>bookId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <foreign-key id="57" parent="12" name="fk_bl_branch">
+      <ColNames>branchId</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_library_branch</RefTableName>
+      <RefColNames>branchId</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <foreign-key id="58" parent="12" name="fk_bl_borrower">
+      <ColNames>cardNo</ColNames>
+      <RefSchemaName>library</RefSchemaName>
+      <RefTableName>tbl_borrower</RefTableName>
+      <RefColNames>cardNo</RefColNames>
+      <OnUpdate>update</OnUpdate>
+      <OnDelete>delete</OnDelete>
+    </foreign-key>
+    <column id="59" parent="13" name="cardNo">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="60" parent="13" name="name">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="61" parent="13" name="address">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="62" parent="13" name="phone">
+      <Position>4</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="63" parent="13" name="username">
+      <Position>5</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="64" parent="13" name="password">
+      <Position>6</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="65" parent="13" name="PRIMARY">
+      <ColNames>cardNo</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="66" parent="14" name="genre_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="67" parent="14" name="genre_name">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <key id="68" parent="14" name="PRIMARY">
+      <ColNames>genre_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="69" parent="15" name="branchId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="70" parent="15" name="branchName">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="71" parent="15" name="branchAddress">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <key id="72" parent="15" name="PRIMARY">
+      <ColNames>branchId</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="73" parent="16" name="publisherId">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="74" parent="16" name="publisherName">
+      <Position>2</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="75" parent="16" name="publisherAddress">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <column id="76" parent="16" name="publisherPhone">
+      <Position>4</Position>
+      <DataType>varchar(45)|0</DataType>
+    </column>
+    <key id="77" parent="16" name="PRIMARY">
+      <ColNames>publisherId</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

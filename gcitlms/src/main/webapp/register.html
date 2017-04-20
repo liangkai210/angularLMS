@@ -1,0 +1,38 @@
+<div class="container">
+    <h2>Library Management System</h2>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+
+        <div class="col-md-4">
+            <form class="form-signin">
+                <h5 class="form-signin-heading">Please Register</h5>
+                <br> <label class="sr-only">User Name</label>
+                <input name="username" type="text"
+                       ng-model="borrower.username"
+                       class="form-control"
+                       placeholder="User Name"
+                       required autofocus>
+
+                <br> <label for="inputPassword" class="sr-only">Password</label>
+                <input name="password" type="password" id="inputPassword" ng-model="borrower.password"
+                       class="form-control" placeholder="Password" required>
+                <br> <label class="sr-only">Name</label>
+                <br> <input name="name" type="text" class="form-control" placeholder="Name" ng-model="borrower.name">
+                <br> <label class="sr-only">Address</label>
+                <br> <input name="address" type="text" class="form-control" placeholder="Address"
+                            ng-model="borrower.address">
+                <br> <label class="sr-only">Phone</label>
+                <br> <input name="phone" type="text" class="form-control" placeholder="Phone Number"
+                            ng-model="borrower.phone">
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="newBorrower()">Register
+                </button>
+                <button class="btn btn-lg btn-danger btn-block" type="submit" ng-click="newBorrower()">Register
+                </button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

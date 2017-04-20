@@ -1,0 +1,171 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="borrowerCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Borrower Name"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchBorrower()">
+            </div>
+            <div borrower-count-directive></div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Borrower Name</th>
+                    <th>Borrower Address</th>
+                    <th>Borrower Phone</th>
+                    <th>Loan Status</th>
+                    <th>Edit Borrower</th>
+                    <th>Edit Book Loan</th>
+                    <th>Delete Borrower</th>
+                </tr>
+                <tr ng-repeat="b in borrowers | orderBy: 'name' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{b.name}}</td>
+                    <td>{{b.address}}</td>
+                    <td>{{b.phone}}</td>
+                    <td>
+                    <span ng-if="b.hasLoans">
+                        Has Loans
+                    </span>
+                        <span ng-if="!b.hasLoans">
+                        No Loans
+                    </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="button" value="Edit"
+                                ng-click="showEditBookLoanModal(b.cardNo)">Edit Loans
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditBorrowerModal(b.cardNo)">Edit Borrower
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deleteBorrower(b.cardNo)">Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editBorrowerModal"
+             id="editBorrowerModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Borrower Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Borrower Name</h5>
+                            <input type="text" ng-model="borrower.name" class="form-control"
+                                   value="{{borrower.name}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Borrower Address</h5>
+                            <input type="text" ng-model="borrower.address" class="form-control"
+                                   value="{{borrower.address}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Borrower Phone</h5>
+                            <input type="text" ng-model="borrower.phone" class="form-control"
+                                   value="{{borrower.phone}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-warning">
+                            <button type="button" class="btn btn-primary" ng-click=updateBorrower()
+                                    data-dismiss="modal">Update
+                            </button>
+                            <button type="button" class="btn btn-danger" ng-click=closeBorrowerModal()
+                                    data-dismiss="modal">Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" modal="editBookLoanModal"
+             id="editBookLoanModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document" style="width: 900px;">
+                <div class="modal-content" style="width: 1000px;">
+                    <div class="container" style="width: 930px;">
+                        <h2>Book Loan Details</h2>
+                        <hr>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Book Title"
+                                   aria-describedby="basic-addon1" ng-model="searchBookLoans"
+                                   id="searchBookLoans" ng-change="searchBookLoan(cardNo)">
+                        </div>
+                        <ul class="pagination">
+                            <li><a href="" ng-click="paginationInBookLoan.prevPage()">&laquo;</a></li>
+                            <li ng-repeat="n in [] | range: paginationInBookLoan.numPages"
+                                ng-class="{active: n == paginationInBookLoan.page}"><a href=""
+                                                                                       ng-click="paginationInBookLoan.toPageId(n)">{{n
+                                + 1}}</a></li>
+                            <li><a href="" ng-click="paginationInBookLoan.nextPage()">&raquo;</a></li>
+                        </ul>
+                        <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>Book Title</th>
+                                <th>Publisher</th>
+                                <th>Authors</th>
+                                <th>Genres</th>
+                                <th>DateOut</th>
+                                <th>Edit DueDate</th>
+                            </tr>
+                            <tr ng-repeat="l in loansFromBorrower | orderBy: 'l.book.title' | startFrom: paginationInBookLoan.page * paginationInBookLoan.perPage | limitTo: paginationInBookLoan.perPage">
+                                <td>{{$index+1}}</td>
+                                <td>{{l.book.title}}</td>
+                                <td>{{l.book.publisher.publisherName}}</td>
+                                <td>
+                                <span ng-repeat="a in l.book.authors">
+                                    <span ng-if="!$last">
+                                        {{a.authorName}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{a.authorName}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>
+                                <span ng-repeat="g in l.book.genres">
+                                    <span ng-if="!$last">
+                                        {{g.genre_name}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{g.genre_name}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>{{l.dateOut}}</td>
+                                <td>
+                                    <input type="date" ng-model="l.dueDate">
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" type="button" value="Edit"
+                                            ng-click="editBookLoan(l)">Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-danger" type="button" ng-click="closeBookLoanModal()">Close Window
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

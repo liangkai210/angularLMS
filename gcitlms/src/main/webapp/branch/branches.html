@@ -1,0 +1,233 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="branchCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Branch Name"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchBranch()">
+            </div>
+            <div branch-count-directive></div>
+            <div style="float: right;">
+                <button class="btn btn-primary" type="button" ng-click="showEditBranchModal(0)">Add New Branch
+                </button>
+            </div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Branch Name</th>
+                    <th>Branch Address</th>
+                    <th>Edit Branch</th>
+                    <th>Edit Book Copy</th>
+                    <th>Add Book Copy</th>
+                    <th>Delete Branch</th>
+                </tr>
+                <tr ng-repeat="br in branches | orderBy: 'branchName' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{br.branchName}}</td>
+                    <td>{{br.branchAddress}}</td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditBranchModal(br.branchId)">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="button" value="Edit Copy"
+                                ng-click="showEditBookCopyModal(br)">Edit Copy
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" type="button"
+                                ng-click="showAvaiBookCopyModal(br)">Add New Copy
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deleteBranch(br.branchId)">Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editBranchModal"
+             id="editBranchModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Branch Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Branch Name</h5>
+                            <input type="text" ng-model="branch.branchName" class="form-control"
+                                   value="{{branch.branchName}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Branch Address</h5>
+                            <input type="text" ng-model="branch.branchAddress" class="form-control"
+                                   value="{{branch.branchAddress}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-warning">
+                                <span ng-if="branch.branchId > 0">
+                                <button type="button" class="btn btn-primary" ng-click=updateBranch()
+                                        data-dismiss="modal">Update
+                            </button>
+                            </span>
+                            <span ng-if="branch.branchId < 1">
+                                <button type="button" class="btn btn-success" ng-click=addNewBranch()
+                                        data-dismiss="modal">Add
+                            </button>
+                            </span>
+                            <button type="button" class="btn btn-danger" ng-click=closeBranchModal()
+                                    data-dismiss="modal">Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-lg" modal="avaiBookCopyModal"
+             id="avaiBookCopyModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content" style="width: 1000px;">
+                    <div class="container" style="width: 850px;">
+                        <h2>New Copy Details</h2>
+                        <hr>
+                        <ul class="pagination">
+                            <li><a href="" ng-click="paginationInNewCopy.prevPage()">&laquo;</a></li>
+                            <li ng-repeat="n in [] | range: paginationInNewCopy.numPages"
+                                ng-class="{active: n == paginationInNewCopy.page}"><a href=""
+                                                                                      ng-click="paginationInNewCopy.toPageId(n)">{{n
+                                + 1}}</a></li>
+                            <li><a href="" ng-click="paginationInNewCopy.nextPage()">&raquo;</a></li>
+                        </ul>
+                        <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>Book Title</th>
+                                <th>Authors</th>
+                                <th>Genres</th>
+                                <th>Publisher</th>
+                                <th>Add Book Copy</th>
+                            </tr>
+                            <tr ng-repeat="b in avaiBookCopies | orderBy: 'b.title' | startFrom: paginationInNewCopy.page * paginationInNewCopy.perPage | limitTo: paginationInNewCopy.perPage">
+                                <td>{{$index+1}}</td>
+                                <td>{{b.title}}</td>
+                                <td>{{b.publisher.publisherName}}</td>
+                                <td>
+                                <span ng-repeat="a in b.authors">
+                                    <span ng-if="!$last">
+                                        {{a.authorName}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{a.authorName}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>
+                                <span ng-repeat="g in b.genres">
+                                    <span ng-if="!$last">
+                                        {{g.genre_name}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{g.genre_name}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" type="button"
+                                            ng-click="addNewCopy(b.bookId)">Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-danger" type="button" ng-click="closeAddCopyModal()">Close Window
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bs-example-modal-lg" modal="editBookCopyModal"
+             id="editBookCopyModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content" style="width: 1000px;">
+                    <div class="container" style="width: 850px;">
+                        <h2>Book Copy Details</h2>
+                        <hr>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Book Title"
+                                   aria-describedby="basic-addon1" ng-model="searchBookCopies"
+                                   id="searchBookCopies" ng-change="searchBookCopy()">
+                        </div>
+                        <ul class="pagination">
+                            <li><a href="" ng-click="paginationInBookCopy.prevPage()">&laquo;</a></li>
+                            <li ng-repeat="n in [] | range: paginationInBookCopy.numPages"
+                                ng-class="{active: n == paginationInBookCopy.page}"><a href=""
+                                                                                       ng-click="paginationInBookCopy.toPageId(n)">{{n
+                                + 1}}</a></li>
+                            <li><a href="" ng-click="paginationInBookCopy.nextPage()">&raquo;</a></li>
+                        </ul>
+                        <table class="table">
+                            <tr>
+                                <th>#</th>
+                                <th>Book Title</th>
+                                <th>Authors</th>
+                                <th>Genres</th>
+                                <th>Publisher</th>
+                                <th>Edit Book Copy</th>
+                            </tr>
+                            <tr ng-repeat="b in booksInBranch | orderBy: 'b.book.title' | startFrom: paginationInBookCopy.page * paginationInBookCopy.perPage | limitTo: paginationInBookCopy.perPage">
+                                <td>{{$index+1}}</td>
+                                <td>{{b.book.title}}</td>
+                                <td>{{b.book.publisher.publisherName}}</td>
+                                <td>
+                                <span ng-repeat="a in b.book.authors">
+                                    <span ng-if="!$last">
+                                        {{a.authorName}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{a.authorName}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>
+                                <span ng-repeat="g in b.book.genres">
+                                    <span ng-if="!$last">
+                                        {{g.genre_name}},
+                                    </span>
+                                    <span ng-if="$last">
+                                        {{g.genre_name}}
+                                    </span>
+                                </span>
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="b.noOfCopies">
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" type="button" value="Edit"
+                                            ng-click="editBookCopy(b)">Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-danger" type="button" ng-click="closeBookCopyModal()">Close Window
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

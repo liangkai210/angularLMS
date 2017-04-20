@@ -1,0 +1,108 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="publisherCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Publisher Name"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchPublisher()">
+            </div>
+            <div publisher-count-directive></div>
+            <div style="float: right;">
+                <button class="btn btn-primary" type="button" ng-click="showEditPublisherModal(0)">Add New Publisher
+                </button>
+            </div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table">
+                <tr>
+                    <th>#</th>
+                    <th>Publisher Name</th>
+                    <th>Publisher Address</th>
+                    <th>Publisher Phone</th>
+                    <th>Books</th>
+                    <th>Edit Publisher</th>
+                    <th>Delete Publisher</th>
+                </tr>
+                <tr ng-repeat="p in publishers | orderBy: 'publisherName' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{p.publisherName}}</td>
+                    <td>{{p.publisherAddress}}</td>
+                    <td>{{p.publisherPhone}}</td>
+                    <td>
+                <span ng-repeat="b in p.books">
+                    <span ng-if="!$last">
+                    {{b.title}},
+                    </span>
+                    <span ng-if="$last">
+                    {{b.title}}
+                    </span>
+                </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditPublisherModal(p.publisherId)">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deletePublisher(p.publisherId)">Delete
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editPublisherModal"
+             id="editPublisherModal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Publisher Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Publisher Name</h5>
+                            <input type="text" ng-model="publisher.publisherName" class="form-control"
+                                   value="{{publisher.publisherName}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Publisher Address</h5>
+                            <input type="text" ng-model="publisher.publisherAddress" class="form-control"
+                                   value="{{publisher.publisherAddress}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Publisher Phone</h5>
+                            <input type="text" ng-model="publisher.publisherPhone" class="form-control"
+                                   value="{{publisher.publisherPhone}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-warning">
+                                <span ng-if="publisher.publisherId > 0">
+                                <button type="button" class="btn btn-primary" ng-click=updatePublisher()
+                                        data-dismiss="modal">Update
+                            </button>
+                            </span>
+                            <span ng-if="publisher.publisherId < 1">
+                                <button type="button" class="btn btn-success" ng-click=addNewPublisher()
+                                        data-dismiss="modal">Add
+                            </button>
+                            </span>
+                            <button type="button" class="btn btn-danger" ng-click=closePublisherModal()
+                                    data-dismiss="modal">Cancel
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+

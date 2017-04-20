@@ -1,0 +1,93 @@
+<html lang="en" ng-app="libraryApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://54.83.8.59/site/wp-content/uploads/2014/02/favicon.png">
+    <title>LMS</title>
+    <link href="./template_files/bootstrap.min.css" rel="stylesheet"/>
+    <link href="./template_files/theme.css" rel="stylesheet"/>
+    <link href="./template_files/toastr.css">
+    <script src="./template_files/docs.min.js.download"></script>
+
+</head>
+
+<body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://getbootstrap.com/examples/theme/#">LMS</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="http://getbootstrap.com/examples/theme/#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false">Menu <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#/viewbooks">Administrator</a></li>
+                        <li><a href="#/login">Borrower</a></li>
+                        <li><a href="#/librarian">Librarian</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+<div class="view-container">
+    <section data-ng-view="" id="content" class="animate-fade-up"></section>
+</div>
+<!--<div class="col-md-2">-->
+<!--<div class="view-container">-->
+<!--<section ui-view="menus" id="menus" class="animate-fade-up"></section>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-md-10">-->
+<!--<div class="view-container">-->
+<!--<section ui-view="content" id="content" class="animate-fade-up"></section>-->
+<!--</div>-->
+<!--</div>-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+  
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="./template_files/bootstrap.min.js.download"></script>
+<script data-require="angular.js@*" data-semver="1.2.13"
+        src="http://code.angularjs.org/1.2.13/angular.js"></script>
+<script data-require="angular-route.js@*" data-semver="1.2.13"
+        src="http://code.angularjs.org/1.2.13/angular-route.js"></script>
+<script data-require="angular-route.js@*" data-semver="1.2.13"
+        src="http://code.angularjs.org/1.2.13/angular-cookies.js"></script>
+<script src="https://code.angularjs.org/1.2.13/angular-animate.min.js"></script>
+<script src="https://unpkg.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/angular-toastr/dist/angular-toastr.css"/>
+<script src="./template_files/toastr.js"></script>
+<script src="./template_files/simplePagination.js"></script>
+<script src="./template_files/angular-ui-bootstrap-modal.js"></script>
+<script src="./resource/business/app.js"></script>
+<script src="./resource/business/lmsconfig.js"></script>
+<script src="./resource/common/common-services.js"></script>
+<script src="./resource/business/book/bookController.js"></script>
+<script src="./resource/business/author/authorController.js"></script>
+<script src="./resource/business/genre/genreController.js"></script>
+<script src="./resource/business/publisher/publisherController.js"></script>
+<script src="./resource/business/branch/branchController.js"></script>
+<script src="./resource/business/borrower/borrowerController.js"></script>
+<script src="./resource/business/loan/loanController.js"></script>
+<script src="./resource/business/user/registerController.js"></script>
+</html>
+

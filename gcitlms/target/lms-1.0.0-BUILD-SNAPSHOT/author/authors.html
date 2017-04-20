@@ -1,0 +1,100 @@
+<div class="col-md-2" admin-menu></div>
+<div class="col-md-10">
+    <div class="container theme-showcase" role="main" ng-controller="authorCtrl">
+        <div class="jumbotron">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Author Name"
+                       aria-describedby="basic-addon1" ng-model="searchString"
+                       id="searchString" ng-change="searchAuthor()">
+            </div>
+            <div author-count-directive></div>
+            <div style="float: right;">
+                <button class="btn btn-primary" type="button" ng-click="showEditAuthorModal(0)">Add New Author</button>
+            </div>
+            <ul class="pagination">
+                <li><a href="" ng-click="pagination.prevPage()">&laquo;</a></li>
+                <li ng-repeat="n in [] | range: pagination.numPages"
+                    ng-class="{active: n == pagination.page}"><a href=""
+                                                                 ng-click="pagination.toPageId(n)">{{n + 1}}</a></li>
+                <li><a href="" ng-click="pagination.nextPage()">&raquo;</a></li>
+            </ul>
+            <table class="table" id="booksTable">
+                <tr>
+                    <th>#</th>
+                    <th>Author Name</th>
+                    <th>Books</th>
+                    <th>Edit Author</th>
+                    <th>Delete Author</th>
+                </tr>
+                <tr ng-repeat="a in authors | orderBy: 'authorName' | startFrom: pagination.page * pagination.perPage | limitTo: pagination.perPage">
+                    <td>{{$index+1}}</td>
+                    <td>{{a.authorName}}</td>
+                    <td>
+                <span ng-repeat="b in a.books">
+                    <span ng-if="!$last">
+                    {{b.title}},
+                    </span>
+                    <span ng-if="$last">
+                    {{b.title}}
+                    </span>
+                </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" type="button" value="Edit"
+                                ng-click="showEditAuthorModal(a.authorId)">Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" type="button" ng-click="deleteauthor(a.authorId)">Delete</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal fade bs-example-modal-md" modal="editauthormodal"
+             id="editauthormodal" role="dialog"
+             aria-labelledby="myLargeModalLabel">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="container" style="width: 530px;">
+                        <h2>Author Details</h2>
+                        <hr>
+                        <div class="panel panel-danger">
+                            <h5 class="form-signin-heading">Author Name</h5>
+                            <input type="text" id="inputBook" ng-model="author.authorName" class="form-control"
+                                   value="{{author.authorName}}" required autofocus>
+                            <br>
+                        </div>
+                        <div class="panel panel-success">
+                            Books<br><br>
+                            <div class="panel panel-info">
+                                Genres<br><br>
+                                <select ng-model="author.books" ng-options="b.title for b in allbooks track by b.bookId"
+                                        multiple>
+                                </select>
+                                <br>
+                            </div>
+
+                            <div class="panel panel-warning">
+                                <span ng-if="author.authorId > 0">
+                                <button type="button" class="btn btn-primary" ng-click=updateauthor()
+                                        data-dismiss="modal">Update
+                            </button>
+                            </span>
+                                <span ng-if="author.authorId < 1">
+                                <button type="button" class="btn btn-success" ng-click=addnewauthor()
+                                        data-dismiss="modal">Add
+                            </button>
+                            </span>
+                                <button type="button" class="btn btn-danger" ng-click=closeauthormodal()
+                                        data-dismiss="modal">Cancel
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
